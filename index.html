@@ -1,621 +1,671 @@
-<title>Smart College Campus Navigation</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Malnad College of Engineering, Hassan – Main Campus Navigation</title>
 <style>
-/* Layout: planner + steps on the left, sticky blueprint map on the right (stacked on phones), QR sheet underneath */
-:root{
-  --bg:#EBF0F6; --surface:#FFFFFF; --field:#F3F6FA; --ink:#0B1D38; --muted:#52657F;
-  --line:#CBD5E3; --accent:#1F4FD8; --accent-ink:#FFFFFF; --soft:#E3EAF6;
-  --route:#FFB300; --route-casing:#0A1830; --route-ink:#2A1A00;
-  --font-display:'Barlow Semi Condensed','Arial Narrow',system-ui,sans-serif;
-  --font-body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#08101E; --surface:#101B2F; --field:#0B1627; --ink:#E7EEF9; --muted:#93A5C1;
-    --line:#233450; --accent:#7FA6FF; --accent-ink:#071230; --soft:#182742; color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#08101E; --surface:#101B2F; --field:#0B1627; --ink:#E7EEF9; --muted:#93A5C1;
-  --line:#233450; --accent:#7FA6FF; --accent-ink:#071230; --soft:#182742; color-scheme:dark;
-}
+:root{color-scheme:dark;--bg:#0c0d0f;--panel:#141619;--panel2:#1a1d21;--line:#2a2e35;--ink:#ecebe6;--muted:#98a0ad;--accent:#ffc83d;--accent-ink:#17130a;--start:#8fb8ff;--dest:#6fcf97;--stair:#b3a7ee}
 *{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font-body);padding-inline:16px;padding-block:20px 48px}
-.wrap{max-width:1160px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
-button,input,select{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-
-.top{display:flex;flex-direction:column;gap:6px}
-.eyebrow{margin:0;font:600 12px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-h1{margin:0;font:700 clamp(30px,7vw,48px)/1.02 var(--font-display);letter-spacing:.005em;text-wrap:balance}
-.lede{margin:2px 0 0;max-width:60ch;color:var(--muted)}
-
-.app{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);grid-template-areas:"plan" "map" "steps" "near" "qr"}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
-.plan{grid-area:plan}.mapcard{grid-area:map}.steps{grid-area:steps}.near{grid-area:near}.qr{grid-area:qr}
-h2{margin:0 0 12px;font:600 12px/1.2 var(--font-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-@media (min-width:900px){
-  .app{grid-template-columns:minmax(340px,410px) minmax(0,1fr);grid-template-areas:"plan map" "steps map" "near map" "qr qr";align-items:start}
-  .mapcard{position:sticky;top:12px}
-}
-
-/* planner */
-.pick{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:10px 8px;align-items:center}
-.field{display:flex;flex-direction:column;gap:5px;min-width:0}
-.field label{font:600 12px/1 var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
-.field select,.field input{width:100%;height:46px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--field)}
-.field input{font-size:16px}
-.swap{grid-column:2;grid-row:1 / span 2;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--accent)}
-.swap:hover{background:var(--soft)}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.45;min-height:100vh}
+header{padding:20px 24px 16px;border-bottom:1px solid var(--line)}
+header h1{margin:0;font-size:1.35rem;font-weight:700;letter-spacing:-.01em}
+.brand p{margin-top:2px}
+header p{margin:0;font-size:.92rem;color:var(--muted)}
+.layout{display:grid;grid-template-columns:390px 1fr;grid-template-areas:"c m" "s m" "q m";gap:16px;padding:20px 24px 40px;max-width:1380px;margin:0 auto;align-items:start}
+#controls{grid-area:c}#mapPanel{grid-area:m}#stepsPanel{grid-area:s}#sharePanel{grid-area:q}
+@media(max-width:900px){.layout{grid-template-columns:1fr;grid-template-areas:"c" "m" "s" "q";padding:16px}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px}
+.panel h2{margin:0 0 12px;font-size:1rem;font-weight:700}
+label{display:block;font-size:.85rem;font-weight:600;color:var(--muted);margin:0 0 14px}
+select,input[type=text]{width:100%;margin-top:6px;padding:11px 12px;font:inherit;font-size:1rem;font-weight:400;border:1px solid #3a3f48;border-radius:6px;background:var(--bg);color:var(--ink)}
+select option,select optgroup{background:#141619;color:var(--ink)}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+::placeholder{color:#6b7280}
 .combo{position:relative}
-#results{position:absolute;left:0;right:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;max-height:min(52vh,360px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 28px rgba(5,14,32,.22);z-index:30}
-#results li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:10px;padding:9px 10px;border-radius:6px;cursor:pointer}
-#results li[aria-selected="true"],#results li:hover{background:var(--soft)}
-#results li.none{display:block;color:var(--muted);cursor:default}
-#results li.none:hover{background:none}
-.o-code{grid-row:1 / span 2;align-self:center;font:600 13px var(--font-mono);min-width:5.4em}
-.o-name{font-weight:500}
-.o-where{font-size:13px;color:var(--muted)}
-.opts{margin-top:14px;display:flex;flex-direction:column;gap:6px}
-.switch{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:500}
-.switch input{appearance:none;-webkit-appearance:none;width:42px;height:24px;border-radius:12px;background:var(--line);position:relative;margin:0;cursor:pointer;flex:none;transition:background .15s}
-.switch input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);transition:transform .15s}
-.switch input:checked{background:var(--accent)}
-.switch input:checked::after{transform:translateX(18px)}
-.hint{margin:0;font-size:13px;color:var(--muted)}
+#sugg{list-style:none;margin:4px 0 0;padding:4px;position:absolute;left:0;right:0;z-index:20;background:var(--panel2);border:1px solid #3a3f48;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.6);max-height:280px;overflow:auto;display:none;font-weight:400}
+#sugg li{padding:9px 10px;border-radius:4px;cursor:pointer;font-size:.95rem}
+#sugg li:hover,#sugg li.active{background:#262a31}
+#sugg small{color:var(--muted)}
+.row{display:flex;gap:8px;margin-top:4px}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid #3a3f48;background:var(--panel2);padding:10px 14px;color:var(--ink)}
+button:hover{background:#262a31}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700;flex:1}
+button.primary:hover{background:#ffd462}
+#msg{margin-top:10px;font-size:.9rem;color:#ffb86b;min-height:1.2em}
+#summary .route-title{font-weight:700;font-size:1.02rem}
+#summary .via{color:var(--muted);font-weight:400;font-size:.88rem;margin-top:2px}
+.stats{display:flex;gap:28px;margin:14px 0 16px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat b{display:block;font-size:1.7rem;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem;color:var(--muted)}
+.fl{border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:10px;cursor:pointer;background:var(--panel)}
+.fl.active{border-color:#4a505b;background:var(--panel2)}
+.fl h3{margin:0 0 8px;font-size:.95rem;display:flex;align-items:center;gap:8px}
+.fl h3 .ft{margin-left:auto;font-weight:400;font-size:.85rem;color:var(--muted)}
+.badge{background:var(--ink);color:var(--bg);border-radius:4px;padding:1px 7px;font-size:.78rem;font-weight:700}
+.fl ol{margin:0;padding-left:20px;font-size:.93rem;line-height:1.55;color:#c9ccd3}
+.fl li{margin:4px 0}
+.fl b{color:#fff;font-weight:600}
+.tabs{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.tab{padding:8px 16px;border-radius:6px;background:transparent}
+.tab.active{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:700}
+.tab .dot{display:none;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-left:8px}
+.tab.has .dot{display:inline-block}
+svg.floor{width:100%;height:auto;max-height:88vh;display:block;background:#0c0d0f;border-radius:6px;border:1px solid var(--line)}
+svg.floor.hidden{display:none}
+.wall{fill:#121418;stroke:#5a6270;stroke-width:2}
+.wall.stairfill{fill:#17152a;stroke:#6f679f}
+.rl{font-weight:700;fill:#ecebe6;font-family:inherit}
+.sub{fill:#98a0ad;font-family:inherit}
+.deco{fill:#3d444f;font-family:inherit;font-weight:700;letter-spacing:2px}
+.guide{stroke:#232830;stroke-width:2;stroke-dasharray:2 6;fill:none}
+.hit{fill:transparent;cursor:pointer;stroke:transparent}
+.hit:hover{fill:rgba(255,255,255,.06)}
+.hit.dest{fill:rgba(111,207,151,.16);stroke:var(--dest);stroke-width:3}
+.hit.src{fill:rgba(143,184,255,.16);stroke:var(--start);stroke-width:3}
+.route-bg{stroke:#0c0d0f;stroke-width:12;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.route{stroke:var(--accent);stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mk text{font:700 13px "Segoe UI",system-ui,sans-serif;fill:#0c0d0f;text-anchor:middle}
+.mklabel{font:700 13px "Segoe UI",system-ui,sans-serif;fill:#fff;paint-order:stroke;stroke:#0c0d0f;stroke-width:4px}
+#coords{font-size:.78rem;color:var(--muted);margin-top:8px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.hint{color:var(--muted);font-size:.93rem;margin:0}
+.note{font-size:.78rem;color:var(--muted);margin:10px 0 0}
+.qrrow{display:flex;gap:16px;align-items:center}
+.qr{flex:none;width:132px;height:132px;border-radius:6px;overflow:hidden;background:#fff}
+.qrsvg{display:block;width:100%;height:100%}
+.qrrow p{margin:0 0 6px;font-size:.92rem;color:#c9ccd3}
+.qrrow a{color:var(--accent);word-break:break-all;font-size:.88rem}
 
-.sum{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
-.metrics{display:flex;flex-wrap:wrap;gap:6px 22px}
-.metric{display:flex;flex-direction:column}
-.metric b{font:700 28px/1.05 var(--font-display);font-variant-numeric:tabular-nums}
-.metric span{font-size:12px;color:var(--muted)}
-.sum-line{margin:0;font-weight:500}
-.btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer}
-.btn.ghost{background:transparent;color:var(--accent)}
-.btn:hover{filter:brightness(1.08)}
-.btn[aria-pressed="true"]{background:transparent;color:var(--accent)}
-.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-
-/* map */
-.maphead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
-.maphead h2{margin:0}
-.zoom{display:flex;gap:6px}
-.zoom button{width:38px;height:38px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;font:600 18px/1 var(--font-body);display:grid;place-items:center}
-.zoom button:hover{background:var(--soft)}
-.zoom button:disabled{opacity:.4;cursor:default}
-.scroller{overflow:auto;max-height:min(80vh,920px);border:1px solid var(--line);border-radius:8px;background:#12306b}
-#map{display:block;width:100%;height:auto}
-.room{fill:transparent;stroke:transparent;cursor:pointer}
-.room:hover,.room:focus-visible{fill:rgba(255,179,0,.18);stroke:var(--route);stroke-width:2;outline:none}
-.hl{fill:rgba(255,179,0,.30);stroke:var(--route);stroke-width:3;pointer-events:none}
-.hl.start{fill:rgba(255,255,255,.18);stroke:#fff;stroke-width:2.5}
-#casing,#route{fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
-#casing{stroke:var(--route-casing);stroke-width:12}
-#route{stroke:var(--route);stroke-width:6}
-.legend{margin:10px 0 0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
-.legend span{display:inline-flex;align-items:center;gap:7px}
-.dot{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none}
-.dot.s{background:#fff;border:3px solid var(--route-casing);box-shadow:0 0 0 1px var(--line)}
-.dot.e{background:var(--route);border:3px solid var(--route-casing)}
-.dot.r{width:22px;height:5px;border-radius:3px;background:var(--route)}
-.note{margin:8px 0 0;font-size:13px;color:var(--muted)}
-
-/* steps */
-ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-ol.list li{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:start;padding:11px 0;border-top:1px solid var(--line)}
-ol.list li:first-child{border-top:0;padding-top:0}
-.ico{width:36px;height:36px;border-radius:50%;background:var(--soft);color:var(--accent);display:grid;place-items:center}
-.ico svg,.swap svg,.btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
-.arrive .ico{background:var(--route);color:var(--route-ink)}
-.s-text{font-weight:500;padding-top:6px}
-.s-sub{display:block;font-weight:400;font-size:13px;color:var(--muted)}
-.s-dist{font:500 13px var(--font-mono);color:var(--muted);padding-top:8px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.empty{margin:0;color:var(--muted)}
-
-/* nearby */
-.nearlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.nearlist button{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;padding:10px 4px;border:0;border-top:1px solid var(--line);background:none;cursor:pointer}
-.nearlist li:first-child button{border-top:0}
-.nearlist button:hover{background:var(--soft)}
-.n-code{font:600 13px var(--font-mono);min-width:5.4em}
-.n-dist{font:500 13px var(--font-mono);color:var(--muted);white-space:nowrap}
-
-/* qr */
-.qrgrid{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
-@media (min-width:640px){.qrgrid{grid-template-columns:200px minmax(0,1fr);align-items:start}}
-.qrbox{width:200px;max-width:100%;aspect-ratio:1;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px;display:grid;place-items:center}
-.qrbox svg{width:100%;height:100%;display:block}
-.qrctl{display:flex;flex-direction:column;gap:12px;min-width:0}
-.qrctl p{margin:0;color:var(--muted)}
-.linkrow{display:flex;gap:8px}
-.linkrow input{flex:1;min-width:0;height:42px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--field);font:13px var(--font-mono)}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+#splash{position:fixed;inset:0;z-index:100;background:#0c0d0f;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;cursor:pointer;animation:splashOut .5s ease 2s forwards}
+#splash .in{max-width:640px;animation:splashIn .7s ease both}
+#splash h2{text-wrap:balance;margin:0;font-size:clamp(1.9rem,6vw,3.2rem);line-height:1.1;font-weight:700;letter-spacing:-.02em}
+#splash .place{margin:12px 0 0;font-size:clamp(1rem,2.6vw,1.25rem);color:#98a0ad}
+#splash .bar{margin:34px auto 0;width:min(220px,60vw);height:3px;background:#2a2e35;border-radius:2px;overflow:hidden}
+#splash .bar i{display:block;height:100%;width:100%;background:#ffc83d;transform-origin:left;animation:splashBar 2s linear both}
+#splash .skip{margin:14px 0 0;font-size:.8rem;color:#6b7280}
+@keyframes splashIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes splashBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes splashOut{to{opacity:0;visibility:hidden;pointer-events:none}}
+@media(prefers-reduced-motion:reduce){#splash .in{animation:none}#splash .bar i{animation:none;transform:none}}
 </style>
+</head>
+<body>
+<div id="splash" role="status" aria-live="polite">
+  <div class="in">
+    <h2>Malnad College of Engineering</h2>
+    <p class="place">Hassan · Main Campus Navigation</p>
+    <div class="bar"><i></i></div>
+    <p class="skip">Tap to skip</p>
+  </div>
+</div>
+<header>
+  <div class="brand"><h1>Malnad College of Engineering, Hassan</h1><p>Main Campus Navigation</p></div>
+</header>
 
-<div class="wrap">
-  <header class="top">
-    <p class="eyebrow">Block MB · Rooms 101–116</p>
-    <h1>Smart College Campus Navigation</h1>
-    <p class="lede">Choose where you are and where you want to go. The shortest walking route is drawn on the college blueprint, with directions you can read or listen to.</p>
-  </header>
-
-  <main class="app">
-    <section class="card plan" aria-labelledby="h-plan">
-      <h2 id="h-plan">Plan a route</h2>
-      <div class="pick">
-        <div class="field">
-          <label for="from">From</label>
-          <select id="from"></select>
-        </div>
-        <button class="swap" id="swap" type="button" aria-label="Swap start and destination">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v14M3.5 14.5 7 18l3.5-3.5M17 20V6M13.5 9.5 17 6l3.5 3.5"/></svg>
-        </button>
-        <div class="field combo">
-          <label for="to">To · room number or name</label>
-          <input id="to" type="text" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Try 113, physics or chem lab">
-          <ul id="results" role="listbox" aria-label="Matching places" hidden></ul>
-        </div>
+<div class="layout">
+  <section class="panel" id="controls">
+    <label>Starting from
+      <select id="from"></select>
+    </label>
+    <label>Destination (room number or name)
+      <div class="combo">
+        <input type="text" id="to" placeholder="e.g. MB 214, AB 205, library, HOD" autocomplete="off">
+        <ul id="sugg"></ul>
       </div>
-      <div class="opts">
-        <label class="switch"><input type="checkbox" id="stepfree" role="switch"> Step-free route</label>
-        <p class="hint" id="accHint" hidden></p>
-      </div>
-      <div class="sum" id="sum" aria-live="polite"></div>
-    </section>
+    </label>
+    <label>Stairs to use (when the room is on another floor)
+      <select id="stairPref">
+        <option value="auto">Nearest stairs</option>
+        <option value="ENT">Entrance stairs (left)</option>
+        <option value="S1">Stairs 1 (bottom-right)</option>
+        <option value="S2">Stairs 2 (top-right)</option>
+      </select>
+    </label>
+    <div class="row">
+      <button class="primary" id="go">Get directions</button>
+      <button id="swap" title="Swap start and destination">⇄</button>
+      <button id="clear">Clear</button>
+    </div>
+    <div id="msg"></div>
+  </section>
 
-    <section class="card mapcard" aria-labelledby="h-map">
-      <div class="maphead">
-        <h2 id="h-map">Blueprint</h2>
-        <div class="zoom" role="group" aria-label="Zoom">
-          <button type="button" id="zout" aria-label="Zoom out">−</button>
-          <button type="button" id="zin" aria-label="Zoom in">+</button>
-        </div>
-      </div>
-      <div class="scroller" id="scroller">
-        <svg id="map" viewBox="0 0 730 880" role="img" aria-label="Blueprint of Block MB with the walking route highlighted">
-          <image href="blueprint.png" x="0" y="0" width="730" height="880"/>
-          <g id="rooms"></g>
-          <rect id="hlStart" class="hl start" width="0" height="0" rx="2" hidden/>
-          <rect id="hlEnd" class="hl" width="0" height="0" rx="2" hidden/>
-          <polyline id="casing" points=""/>
-          <polyline id="route" points=""/>
-          <g id="startMark" hidden><circle r="9" fill="#fff" stroke="#0A1830" stroke-width="3.5"/></g>
-          <g id="endMark" hidden><circle r="12" fill="#FFB300" stroke="#0A1830" stroke-width="3.5"/><circle r="3.5" fill="#0A1830"/></g>
-        </svg>
-      </div>
-      <p class="legend"><span><i class="dot s"></i>Start</span><span><i class="dot e"></i>Destination</span><span><i class="dot r"></i>Shortest route</span></p>
-      <p class="note">Tap any room on the blueprint to get directions to it. Distances are estimated from the drawing (about 1 m for every 10 px).</p>
-    </section>
+  <section class="panel" id="mapPanel">
+    <div class="tabs">
+      <button class="tab active" data-floor="1">First floor<span class="dot"></span></button>
+      <button class="tab" data-floor="2">Second floor<span class="dot"></span></button>
+    </div>
+    <svg id="svg1" class="floor"></svg>
+    <svg id="svg2" class="floor hidden"></svg>
+    <div class="legend">
+      <span><i style="background:#8fb8ff"></i>Start</span>
+      <span><i style="background:#6fcf97"></i>Destination</span>
+      <span><i style="background:#b3a7ee"></i>Stairs</span>
+      <span><i style="background:#ffc83d"></i>Route</span>
+      <span>You can also click a room on the map.</span>
+    </div>
+    <div id="coords"></div>
+  </section>
 
-    <section class="card steps" aria-labelledby="h-steps">
-      <h2 id="h-steps">Directions</h2>
-      <div id="steps"></div>
-    </section>
-
-    <section class="card near" aria-labelledby="h-near">
-      <h2 id="h-near">Nearby</h2>
-      <div id="near"></div>
-    </section>
-
-    <section class="card qr" aria-labelledby="h-qr">
-      <h2 id="h-qr">QR codes for the campus</h2>
-      <div class="qrgrid">
-        <div class="qrbox" id="qrbox" aria-live="polite"></div>
-        <div class="qrctl">
-          <div class="field">
-            <label for="qrloc">Place this code is for</label>
-            <select id="qrloc"></select>
-          </div>
-          <p>Stick the code beside the door. Anyone who scans it opens this page already set to that spot, then picks a destination.</p>
-          <div class="field">
-            <label for="qrbase">Page link used in the code</label>
-            <div class="linkrow">
-              <input id="qrbase" type="text" spellcheck="false" autocomplete="off" placeholder="Paste this page's link">
-              <button class="btn ghost" id="qrcopy" type="button">Copy link</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+  <section class="panel" id="stepsPanel">
+    <div id="summary"></div>
+    <div id="steps"><p class="hint">Pick where you are, type a room number, and select Get directions. If the room is on the other floor, the route goes to the nearest stairs first.</p><p class="note">Walking times are estimates.</p></div>
+  </section>
+  <section class="panel" id="sharePanel">
+    <h2>Open on your phone</h2>
+    <div class="qrrow">
+      <div class="qr"><svg class="qrsvg" viewBox="0 0 37 37" role="img" aria-label="QR code for https://velvety-centaur-02a9c2.netlify.app/" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path d="M4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM20 4h1v1h-1zM23 4h1v1h-1zM24 4h1v1h-1zM26 4h1v1h-1zM27 4h1v1h-1zM28 4h1v1h-1zM29 4h1v1h-1zM30 4h1v1h-1zM31 4h1v1h-1zM32 4h1v1h-1zM4 5h1v1h-1zM10 5h1v1h-1zM17 5h1v1h-1zM20 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h1v1h-1zM7 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM15 6h1v1h-1zM16 6h1v1h-1zM17 6h1v1h-1zM20 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM29 6h1v1h-1zM30 6h1v1h-1zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h1v1h-1zM7 7h1v1h-1zM8 7h1v1h-1zM10 7h1v1h-1zM12 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM17 7h1v1h-1zM18 7h1v1h-1zM21 7h1v1h-1zM22 7h1v1h-1zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM29 7h1v1h-1zM30 7h1v1h-1zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM17 8h1v1h-1zM19 8h1v1h-1zM20 8h1v1h-1zM23 8h1v1h-1zM26 8h1v1h-1zM28 8h1v1h-1zM29 8h1v1h-1zM30 8h1v1h-1zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM13 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM20 9h1v1h-1zM22 9h1v1h-1zM23 9h1v1h-1zM24 9h1v1h-1zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM27 10h1v1h-1zM28 10h1v1h-1zM29 10h1v1h-1zM30 10h1v1h-1zM31 10h1v1h-1zM32 10h1v1h-1zM13 11h1v1h-1zM15 11h1v1h-1zM20 11h1v1h-1zM21 11h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM4 12h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM10 12h1v1h-1zM12 12h1v1h-1zM19 12h1v1h-1zM20 12h1v1h-1zM21 12h1v1h-1zM23 12h1v1h-1zM25 12h1v1h-1zM28 12h1v1h-1zM29 12h1v1h-1zM30 12h1v1h-1zM32 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM7 13h1v1h-1zM8 13h1v1h-1zM13 13h1v1h-1zM17 13h1v1h-1zM20 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM25 13h1v1h-1zM26 13h1v1h-1zM27 13h1v1h-1zM28 13h1v1h-1zM32 13h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM17 14h1v1h-1zM21 14h1v1h-1zM24 14h1v1h-1zM25 14h1v1h-1zM27 14h1v1h-1zM28 14h1v1h-1zM30 14h1v1h-1zM31 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM12 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM23 15h1v1h-1zM24 15h1v1h-1zM25 15h1v1h-1zM26 15h1v1h-1zM27 15h1v1h-1zM32 15h1v1h-1zM4 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM15 16h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM19 16h1v1h-1zM20 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM24 16h1v1h-1zM27 16h1v1h-1zM29 16h1v1h-1zM30 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM15 17h1v1h-1zM18 17h1v1h-1zM19 17h1v1h-1zM20 17h1v1h-1zM21 17h1v1h-1zM22 17h1v1h-1zM23 17h1v1h-1zM25 17h1v1h-1zM26 17h1v1h-1zM30 17h1v1h-1zM31 17h1v1h-1zM32 17h1v1h-1zM4 18h1v1h-1zM5 18h1v1h-1zM6 18h1v1h-1zM8 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM13 18h1v1h-1zM14 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM21 18h1v1h-1zM23 18h1v1h-1zM25 18h1v1h-1zM26 18h1v1h-1zM30 18h1v1h-1zM31 18h1v1h-1zM32 18h1v1h-1zM4 19h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM13 19h1v1h-1zM16 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM20 19h1v1h-1zM22 19h1v1h-1zM23 19h1v1h-1zM24 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM31 19h1v1h-1zM4 20h1v1h-1zM5 20h1v1h-1zM6 20h1v1h-1zM7 20h1v1h-1zM8 20h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM15 20h1v1h-1zM17 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM25 20h1v1h-1zM27 20h1v1h-1zM28 20h1v1h-1zM29 20h1v1h-1zM31 20h1v1h-1zM6 21h1v1h-1zM7 21h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM13 21h1v1h-1zM16 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM24 21h1v1h-1zM25 21h1v1h-1zM27 21h1v1h-1zM29 21h1v1h-1zM30 21h1v1h-1zM31 21h1v1h-1zM4 22h1v1h-1zM9 22h1v1h-1zM10 22h1v1h-1zM11 22h1v1h-1zM12 22h1v1h-1zM14 22h1v1h-1zM15 22h1v1h-1zM16 22h1v1h-1zM19 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM25 22h1v1h-1zM26 22h1v1h-1zM27 22h1v1h-1zM28 22h1v1h-1zM30 22h1v1h-1zM6 23h1v1h-1zM7 23h1v1h-1zM9 23h1v1h-1zM13 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM19 23h1v1h-1zM20 23h1v1h-1zM21 23h1v1h-1zM22 23h1v1h-1zM25 23h1v1h-1zM30 23h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h1v1h-1zM13 24h1v1h-1zM15 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM19 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1zM25 24h1v1h-1zM26 24h1v1h-1zM27 24h1v1h-1zM28 24h1v1h-1zM29 24h1v1h-1zM30 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h1v1h-1zM18 25h1v1h-1zM20 25h1v1h-1zM21 25h1v1h-1zM24 25h1v1h-1zM28 25h1v1h-1zM29 25h1v1h-1zM30 25h1v1h-1zM31 25h1v1h-1zM32 25h1v1h-1zM4 26h1v1h-1zM5 26h1v1h-1zM6 26h1v1h-1zM7 26h1v1h-1zM8 26h1v1h-1zM9 26h1v1h-1zM10 26h1v1h-1zM15 26h1v1h-1zM16 26h1v1h-1zM18 26h1v1h-1zM21 26h1v1h-1zM23 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM29 26h1v1h-1zM31 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM22 27h1v1h-1zM24 27h1v1h-1zM28 27h1v1h-1zM29 27h1v1h-1zM31 27h1v1h-1zM4 28h1v1h-1zM6 28h1v1h-1zM7 28h1v1h-1zM8 28h1v1h-1zM10 28h1v1h-1zM14 28h1v1h-1zM16 28h1v1h-1zM17 28h1v1h-1zM21 28h1v1h-1zM24 28h1v1h-1zM25 28h1v1h-1zM26 28h1v1h-1zM27 28h1v1h-1zM28 28h1v1h-1zM30 28h1v1h-1zM31 28h1v1h-1zM32 28h1v1h-1zM4 29h1v1h-1zM6 29h1v1h-1zM7 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM12 29h1v1h-1zM13 29h1v1h-1zM15 29h1v1h-1zM16 29h1v1h-1zM17 29h1v1h-1zM18 29h1v1h-1zM19 29h1v1h-1zM21 29h1v1h-1zM23 29h1v1h-1zM27 29h1v1h-1zM28 29h1v1h-1zM29 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h1v1h-1zM7 30h1v1h-1zM8 30h1v1h-1zM10 30h1v1h-1zM12 30h1v1h-1zM14 30h1v1h-1zM15 30h1v1h-1zM18 30h1v1h-1zM20 30h1v1h-1zM21 30h1v1h-1zM23 30h1v1h-1zM27 30h1v1h-1zM30 30h1v1h-1zM32 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM13 31h1v1h-1zM14 31h1v1h-1zM15 31h1v1h-1zM18 31h1v1h-1zM24 31h1v1h-1zM26 31h1v1h-1zM29 31h1v1h-1zM31 31h1v1h-1zM4 32h1v1h-1zM5 32h1v1h-1zM6 32h1v1h-1zM7 32h1v1h-1zM8 32h1v1h-1zM9 32h1v1h-1zM10 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM18 32h1v1h-1zM20 32h1v1h-1zM23 32h1v1h-1zM24 32h1v1h-1zM25 32h1v1h-1zM29 32h1v1h-1zM31 32h1v1h-1z" fill="#000"/></svg></div>
+      <div><p>Scan this code with your phone camera to open the Malnad College of Engineering campus navigation.</p><a href="https://velvety-centaur-02a9c2.netlify.app/">velvety-centaur-02a9c2.netlify.app/</a></div>
+    </div>
+  </section>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
-/* ---------------- Campus data (edit this block for your college) ---------------- */
-const G = {
-  "nodes": {
-    "ENT": [366, 822], "J": [366, 662], "ADM": [366, 262],
-    "JL": [135, 662], "JR": [610, 662],
-    "B110": [105, 662], "B109": [195, 662], "B108": [240, 662],
-    "B107": [490, 662], "B106": [565, 662], "B105": [638, 662],
-    "L111": [135, 630], "L112": [135, 530], "L113": [135, 410], "L114": [135, 275], "L115": [135, 195], "L116": [135, 100],
-    "R104": [610, 455], "R103": [610, 370], "R102": [610, 190], "R101": [610, 125],
-    "D110": [105, 690], "D109": [195, 690], "D108": [240, 690],
-    "D107": [490, 690], "D106": [565, 690], "D105": [638, 690],
-    "D111": [108, 630], "D112": [108, 530], "D113": [108, 410], "D114": [108, 275], "D115": [108, 195], "D116": [110, 100],
-    "D104": [638, 455], "D103": [638, 370], "D102": [638, 190], "D101": [618, 100]
-  },
-  "edges": [
-    ["ENT", "J", "walk"], ["J", "ADM", "walk"],
-    ["J", "B108", "bottom"], ["B108", "B109", "bottom"], ["B109", "JL", "bottom"], ["JL", "B110", "bottom"],
-    ["J", "B107", "bottom"], ["B107", "B106", "bottom"], ["B106", "JR", "bottom"], ["JR", "B105", "bottom"],
-    ["JL", "L111", "left"], ["L111", "L112", "left"], ["L112", "L113", "left"], ["L113", "L114", "left"], ["L114", "L115", "left"], ["L115", "L116", "left"],
-    ["JR", "R104", "right"], ["R104", "R103", "right"], ["R103", "R102", "right"], ["R102", "R101", "right"],
-    ["B110", "D110", "bottom", 1], ["B109", "D109", "bottom", 1], ["B108", "D108", "bottom", 1],
-    ["B107", "D107", "bottom", 1], ["B106", "D106", "bottom", 1], ["B105", "D105", "bottom", 1],
-    ["L111", "D111", "left", 1], ["L112", "D112", "left", 1], ["L113", "D113", "left", 1], ["L114", "D114", "left", 1], ["L115", "D115", "left", 1], ["L116", "D116", "left", 1],
-    ["R104", "D104", "right", 1], ["R103", "D103", "right", 1], ["R102", "D102", "right", 1], ["R101", "D101", "right", 1]
-  ],
-  "rects": {
-    "MB116": [10, 38, 98, 80], "MB115": [10, 120, 98, 96], "MB114": [10, 218, 98, 114],
-    "MB113": [10, 334, 98, 100], "MB112": [10, 437, 98, 114], "MB111": [10, 554, 98, 132],
-    "MB110": [40, 690, 86, 135], "MB109": [130, 690, 84, 135], "MB108": [218, 690, 94, 135],
-    "MB107": [472, 686, 69, 96], "MB106": [545, 686, 67, 96], "MB105": [616, 686, 98, 96],
-    "MB104": [636, 436, 76, 200], "MB103": [636, 296, 76, 134], "MB102": [636, 132, 76, 160],
-    "MB101": [590, 38, 122, 92], "ADM": [192, 38, 344, 228], "ENT": [316, 790, 100, 80]
-  }
-};
-const SCALE = 0.1;   // metres per blueprint pixel. An estimate; measure one real corridor and adjust.
-const SPEED = 1.25;  // walking speed in metres per second
-const STEP_EDGES = []; // pairs like ["J","B108"] for paths that have stairs. The blueprint shows none yet.
-const VIA = {
-  walk:   {n:'main walkway',  p:'onto'},
-  bottom: {n:'bottom way',    p:'onto'},
-  left:   {n:'left corridor', p:'into'},
-  right:  {n:'right way',     p:'onto'}
-};
-/* name: department or facility on the blueprint; where: plain description of the spot; head: direction you face at the start */
-const LOCS = [
-  {id:'ENT',  code:'Main entrance', name:'', where:'Entrance door at the bottom of the plan', alias:'gate exit door main', node:'ENT', head:'N', kind:'spot'},
-  {id:'ADM',  code:'Admin Block', name:'Administrative Block', where:'End of the main walkway', alias:'office principal', node:'ADM', head:'S', kind:'spot'},
-  {id:'MB101',code:'MB 101', name:'Estate Office', where:'Right way, top end', node:'D101'},
-  {id:'MB102',code:'MB 102', name:'Dept. of Physics', where:'Right way', node:'D102'},
-  {id:'MB103',code:'MB 103', name:'Skills & Consulting Centre', where:'Right way', node:'D103'},
-  {id:'MB104',code:'MB 104', name:'', where:'Right way, lower end', node:'D104'},
-  {id:'MB105',code:'MB 105', name:'', where:'Bottom row, right end', node:'D105'},
-  {id:'MB106',code:'MB 106', name:'', where:'Bottom row, right', node:'D106'},
-  {id:'MB107',code:'MB 107', name:'', where:'Bottom row, right', node:'D107'},
-  {id:'MB108',code:'MB 108', name:'', where:'Bottom row, left, nearest the entrance', node:'D108'},
-  {id:'MB109',code:'MB 109', name:'', where:'Bottom row, left', node:'D109'},
-  {id:'MB110',code:'MB 110', name:'', where:'Bottom row, far left', node:'D110'},
-  {id:'MB111',code:'MB 111', name:'', where:'Left corridor, lower end', node:'D111'},
-  {id:'MB112',code:'MB 112', name:'', where:'Left corridor', node:'D112'},
-  {id:'MB113',code:'MB 113', name:'', where:'Left corridor', node:'D113'},
-  {id:'MB114',code:'MB 114', name:'Dept. of Chemistry', where:'Left corridor', node:'D114'},
-  {id:'MB115',code:'MB 115', name:'Chemistry Lab', where:'Left corridor', alias:'chem lab', node:'D115'},
-  {id:'MB116',code:'MB 116', name:'', where:'Left corridor, top end', node:'D116'}
-];
-LOCS.forEach(l=>{ l.kind = l.kind || 'room'; l.rect = G.rects[l.id] || null; });
-const LOC = Object.fromEntries(LOCS.map(l=>[l.id,l]));
+//<LOGIC>
+/* =====================================================================
+   FLOOR DATA  — coordinates are in the pixel space of your two plan photos
+   (floor1: 1076 x 820, floor2: 896 x 1195). To fix a door or corridor
+   position, click the map: the page prints the x,y of the click.
+   R(id, sub-label, x, y, w, h, doorX, doorY, options)
+   ===================================================================== */
+const R=(id,sub,x,y,w,h,dx,dy,o={})=>Object.assign({id,sub,x,y,w,h,door:[dx,dy]},o);
 
-/* ---------------- Graph and shortest path ---------------- */
-const stepSet = new Set(STEP_EDGES.map(p=>[p[0],p[1]].sort().join('|')));
-const adj = {};
-Object.keys(G.nodes).forEach(k=>adj[k]=[]);
-G.edges.forEach(([a,b,via,door])=>{
-  const [x1,y1]=G.nodes[a], [x2,y2]=G.nodes[b];
-  const w = Math.hypot(x2-x1,y2-y1);
-  const step = stepSet.has([a,b].sort().join('|'));
-  adj[a].push({to:b,w,via,door:!!door,step});
-  adj[b].push({to:a,w,via,door:!!door,step});
-});
-function dijkstra(src, avoidSteps){
-  const dist={}, prev={}, done=new Set();
-  Object.keys(G.nodes).forEach(k=>dist[k]=Infinity);
-  dist[src]=0;
+const STAIR_NAMES={ENT:'Entrance stairs (left side)',S1:'Stairs 1 (bottom-right)',S2:'Stairs 2 (top-right)'};
+
+const FLOORS={
+ 1:{name:'First Floor',w:1076,h:820,photo:null,
+  rooms:[
+   R('MB 110','',90,50,148,98,238,112),
+   R('MB 109','',90,150,148,95,238,198),
+   R('MB 108','',90,248,148,102,238,300),
+   R('MB 111','',245,20,145,100,372,120),
+   R('MB 112','',398,20,124,100,420,120),
+   R('MB 113','',530,20,110,100,585,120),
+   R('MB 114','Dept. of Chemistry',645,20,130,100,705,120),
+   R('MB 115','Chem Lab',780,20,100,100,825,120),
+   R('MB 116','',885,20,85,100,905,120),
+   R('Stairs 2','Top-right stairs',975,15,70,120,975,110,{stair:'S2'}),
+   R('MB 107','',135,535,110,75,245,572),
+   R('MB 106','',135,618,110,74,245,655),
+   R('MB 105','',135,698,165,102,275,700),
+   R('MB 104','',300,718,225,82,400,718),
+   R('MB 103','Skills & Consulting Centre',530,718,155,82,600,718),
+   R('MB 102','Dept. of Physics',690,718,170,82,775,718),
+   R('MB 101','Estate Office',868,718,102,82,915,718),
+   R('Stairs 1','Bottom-right stairs',975,665,70,135,975,700,{stair:'S1'}),
+   R('Entrance Stairs','',75,455,60,80,100,455,{stair:'ENT'}),
+   R('Admission Block','',877,225,98,380,877,415,{rot:90})
+  ],
+  nodes:{ENT:[100,415],JL:[270,415],TL:[270,100],TLc:[270,150],TR:[975,150],BL:[270,692],BR:[975,692],TP:[843,150],BP:[843,692],PM:[843,415]},
+  edges:[['ENT','JL','Main Walkway'],['TL','TLc','Left Corridor'],['TLc','JL','Left Corridor'],['JL','BL','Left Corridor'],['TLc','TP','Top Corridor'],['TP','TR','Top Corridor'],['TP','PM','Admission Passage'],['PM','BP','Admission Passage'],['JL','PM','Main Walkway'],['BL','BP','Bottom Corridor'],['BP','BR','Bottom Corridor']],
+  deco:[
+   {t:'hatch',x:305,y:180,w:405,h:175,label:'GARDEN',rot:90},
+   {t:'hatch',x:305,y:478,w:405,h:185,label:'GARDEN',rot:90},
+   {t:'text',x:500,y:405,s:'WALKWAY / WAY',size:20},
+   {t:'text',x:560,y:172,s:'CORRIDOR',size:18},
+   {t:'text',x:822,y:420,s:'WAY',size:18,rot:-90}
+  ]},
+ 2:{name:'Second Floor',w:896,h:1195,photo:null,
+  rooms:[
+   R('MB 211','Dept. of Mechanical Engineering',68,65,110,125,178,182),
+   R('MB 212','',183,65,82,125,245,190),
+   R('MB 213','Hydraulics & Pneumatics Library',270,65,95,125,350,190),
+   R('MB 214','Dept. of Mechanical Engineering',370,65,85,125,385,190),
+   R('MB 215','Library',460,65,75,125,520,190),
+   R('MB 216','Faculty Room',540,65,80,125,600,190),
+   R('MB 217','',625,65,68,125,675,190),
+   R('Stairs (Top)','Near washroom',697,65,68,85,730,150,{stair:'S2'}),
+   R('Washroom','',770,65,65,125,800,190),
+   R('MB 210','',70,195,108,45,178,215),
+   R('MB 209','Staff Room',70,245,108,85,178,290),
+   R('MB 208','HOD Room',70,338,108,87,178,405),
+   R('Robotics & AI Dept.','',70,430,108,140,178,535),
+   R('Stairs (Left)','Left side stairs',70,578,108,142,178,600,{stair:'ENT'}),
+   R('MB 207','Office of Dean Research',70,725,108,135,178,765),
+   R('MB 206','Dispensary',70,868,108,152,178,885),
+   R('MB 204','',70,1025,92,120,140,1025),
+   R('MB 205','',168,1025,92,120,240,1025),
+   R('MB 203','MCE Alumni Association',262,1025,103,120,275,1025),
+   R('MB 202','AI & ML Programming',372,1025,103,120,450,1025),
+   R('MB 201','',482,1025,108,120,580,1025),
+   R('Stairs 1 (Bottom)','Bottom-right stairs',600,1025,82,120,635,1025,{stair:'S1'}),
+   R('AB 208','',500,275,95,90,520,275),
+   R('AB 209','',500,370,95,105,595,460),
+   R('Balcony (West)','',500,483,95,142,595,500),
+   R('AB 210','',500,632,95,98,595,650),
+   R('AB 211','',500,737,95,93,595,790),
+   R('AB 212','',500,838,95,102,595,925),
+   R('AB 201','',670,232,125,65,670,265),
+   R('AB 202','',670,303,125,75,670,340),
+   R('Balcony (East)','',670,385,125,80,670,425),
+   R('AB 203','',670,473,125,97,670,520),
+   R('AB 204','',670,578,125,77,670,640),
+   R('AB 205','',670,665,125,95,670,745),
+   R('AB 206','',670,768,125,82,670,830),
+   R('AB 207','',670,860,125,85,670,925)
+  ],
+  nodes:{TL2:[210,225],W1T:[635,225],TR2:[800,225],BL2:[210,985],BLx:[80,985],W1B:[635,985]},
+  edges:[['TL2','W1T','Way 4'],['W1T','TR2','Way 4'],['TL2','BL2','Way 3'],['BL2','W1B','Way 2'],['BL2','BLx','Way 2'],['W1T','W1B','Way 1']],
+  deco:[
+   {t:'hatch',x:245,y:270,w:250,h:670,label:'OPEN AREA',rot:90},
+   {t:'text',x:420,y:258,s:'WAY 4',size:20},
+   {t:'text',x:232,y:610,s:'WAY 3',size:20,rot:-90},
+   {t:'text',x:420,y:1012,s:'WAY 2',size:20},
+   {t:'text',x:655,y:610,s:'WAY 1',size:20,rot:-90}
+  ]}
+};
+
+/* ---------- registry of every searchable place ---------- */
+const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
+const ROOMS=[];
+ROOMS.push({key:'1:ENTRANCE',id:'Main Entrance',sub:'Ground floor entrance',floor:1,pseudo:true,node:'ENT',cx:100,cy:415,door:[100,415],
+  nid:'mainentrance',norm:norm('Main Entrance door entry')});
+for(const n in FLOORS){
+  FLOORS[n].rooms.forEach(r=>{
+    r.floor=+n; r.key=n+':'+r.id; r.cx=r.x+r.w/2; r.cy=r.y+r.h/2;
+    r.nid=norm(r.id); r.norm=norm(r.id+' '+r.sub);
+    ROOMS.push(r);
+  });
+}
+const ROOM_BY_KEY={}; ROOMS.forEach(r=>ROOM_BY_KEY[r.key]=r);
+const stairNode={1:{},2:{}};
+ROOMS.forEach(r=>{ if(r.stair) stairNode[r.floor][r.stair]='st:'+r.key; });
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const nm=r=>r.sub?`${esc(r.id)} (${esc(r.sub)})`:esc(r.id);
+
+/* ---------- graph per floor ---------- */
+const graphs={};
+function buildGraph(n){
+  const F=FLOORS[n], nodes={}, edges=[], attachMap={};
+  for(const k in F.nodes) nodes[k]={id:k,x:F.nodes[k][0],y:F.nodes[k][1]};
+  F.edges.forEach(([a,b,way])=>edges.push({a,b,way}));
+  const near=(p,q)=>Math.hypot(p.x-q.x,p.y-q.y)<2.5;
+  function attach(tag,p){
+    let best=null;
+    for(const e of edges){
+      const A=nodes[e.a],B=nodes[e.b],dx=B.x-A.x,dy=B.y-A.y,L2=dx*dx+dy*dy;
+      let t=((p.x-A.x)*dx+(p.y-A.y)*dy)/L2; t=Math.max(0,Math.min(1,t));
+      const q={x:A.x+t*dx,y:A.y+t*dy}, d=Math.hypot(p.x-q.x,p.y-q.y);
+      if(!best||d<best.d) best={d,e,q};
+    }
+    const {e,q}=best;
+    if(near(q,nodes[e.a])) return e.a;
+    if(near(q,nodes[e.b])) return e.b;
+    const nid='p:'+tag; nodes[nid]={id:nid,x:q.x,y:q.y};
+    const i=edges.indexOf(e);
+    edges.splice(i,1,{a:e.a,b:nid,way:e.way},{a:nid,b:e.b,way:e.way});
+    return nid;
+  }
+  const extra=[];
+  F.rooms.forEach(r=>{
+    const dn='d:'+r.key;
+    nodes[dn]={id:dn,x:r.door[0],y:r.door[1]};
+    const c=attach(r.key,{x:r.door[0],y:r.door[1]});
+    (attachMap[c]=attachMap[c]||[]).push(r);
+    extra.push({a:dn,b:c,way:'~door'});
+    if(r.stair){ const sn='st:'+r.key; nodes[sn]={id:sn,x:r.cx,y:r.cy}; extra.push({a:sn,b:dn,way:'~door'}); }
+  });
+  const adj={}; Object.keys(nodes).forEach(k=>adj[k]=[]);
+  [...edges,...extra].forEach(e=>{
+    const A=nodes[e.a],B=nodes[e.b],w=Math.hypot(A.x-B.x,A.y-B.y);
+    adj[e.a].push({to:e.b,w,way:e.way}); adj[e.b].push({to:e.a,w,way:e.way});
+  });
+  graphs[n]={nodes,adj,attachMap,edges};
+}
+buildGraph(1); buildGraph(2);
+
+function dijkstra(G,s,t){
+  const dist={},prev={},done={};
+  Object.keys(G.nodes).forEach(k=>dist[k]=Infinity); dist[s]=0;
   for(;;){
     let u=null,best=Infinity;
-    for(const k in dist){ if(!done.has(k) && dist[k]<best){best=dist[k];u=k;} }
-    if(u===null) break;
-    done.add(u);
-    for(const e of adj[u]){
-      if(avoidSteps && e.step) continue;
-      const nd=dist[u]+e.w;
-      if(nd<dist[e.to]){dist[e.to]=nd;prev[e.to]=u;}
+    for(const k in dist) if(!done[k]&&dist[k]<best){best=dist[k];u=k;}
+    if(u===null) return null;
+    if(u===t) break;
+    done[u]=1;
+    for(const e of G.adj[u]){ const nd=dist[u]+e.w; if(nd<dist[e.to]){dist[e.to]=nd;prev[e.to]=u;} }
+  }
+  const path=[t]; while(path[0]!==s) path.unshift(prev[path[0]]);
+  return {dist:dist[t],path};
+}
+
+/* ---------- turn-by-turn text ---------- */
+function classify(a,b){
+  const la=Math.hypot(a[0],a[1]), lb=Math.hypot(b[0],b[1]);
+  const dot=(a[0]*b[0]+a[1]*b[1])/(la*lb), cr=(a[0]*b[1]-a[1]*b[0])/(la*lb);
+  if(dot>0.9) return 'straight';
+  if(dot<-0.9) return 'back';
+  return cr>0?'right':'left';          // screen coords: y points down
+}
+function sideOf(h,v){
+  const lh=Math.hypot(h[0],h[1]), lv=Math.hypot(v[0],v[1]);
+  if(!lh||lv<3) return null;
+  const cr=(h[0]*v[1]-h[1]*v[0])/(lh*lv);
+  if(Math.abs(cr)<0.3) return null;
+  return cr>0?'right':'left';
+}
+
+function describe(floor,ids,start,end){
+  const G=graphs[floor], P=id=>G.nodes[id], steps=[];
+  const isC=id=>!(id.startsWith('d:')||id.startsWith('st:'));
+  const way=(a,b)=>G.adj[a].find(e=>e.to===b).way;
+
+  if(start.type==='entrance') steps.push('Start at the <b>Main Entrance</b> and walk in.');
+  else if(start.type==='stair') steps.push(`You arrive on the <b>${FLOORS[floor].name}</b> at <b>${start.name}</b>.`);
+  else steps.push(`Start at <b>${nm(start.room)}</b> and step out through its door.`);
+
+  const pts=ids.map(id=>[P(id).x,P(id).y]);
+  if(start.type==='room'&&!start.room.stair) pts.unshift([start.room.cx,start.room.cy]);
+  if(end.type==='room'&&!end.room.pseudo&&!end.room.stair) pts.push([end.room.cx,end.room.cy]);
+
+  const first=ids.findIndex(isC);
+  const lastRev=[...ids].reverse().findIndex(isC);
+  let heading=null;
+
+  if(first>=0){
+    const last=ids.length-1-lastRev;
+    const core=ids.slice(first,last+1);
+    if(first>0){ const a=P(ids[first-1]),b=P(ids[first]); const v=[b.x-a.x,b.y-a.y]; if(Math.hypot(v[0],v[1])>3) heading=v; }
+    else if(start.type==='entrance') heading=[1,0];
+
+    const groups=[];
+    for(let k=0;k<core.length-1;k++){
+      const w=way(core[k],core[k+1]), g=groups[groups.length-1];
+      if(g&&g.way===w) g.nodes.push(core[k+1]); else groups.push({way:w,nodes:[core[k],core[k+1]]});
+    }
+    const skip=new Set([start.room&&start.room.key,end.room&&end.room.key]);
+    const seen=new Set();
+    groups.forEach(g=>{
+      const a=P(g.nodes[0]), b=P(g.nodes[g.nodes.length-1]);
+      g.h=[b.x-a.x,b.y-a.y];
+      const t=heading?classify(heading,g.h):'start';
+      const verb={left:'Turn left onto',right:'Turn right onto',straight:'Continue straight on',back:'Turn around and go along',start:'Head along'}[t];
+      const passes=[];
+      g.nodes.forEach(nid=>(G.attachMap[nid]||[]).forEach(r=>{
+        if(skip.has(r.key)||seen.has(r.key)||r.stair) return;
+        seen.add(r.key);
+        const s=sideOf(g.h,[r.door[0]-P(nid).x,r.door[1]-P(nid).y]);
+        passes.push(esc(r.id)+(s?` (${s})`:''));
+      }));
+      steps.push(`${verb} <b>${esc(g.way)}</b>`+(passes.length?` — passing ${passes.slice(0,6).join(', ')}${passes.length>6?'…':''}`:'')+'.');
+      heading=g.h;
+    });
+
+    var side=null;
+    if(last<ids.length-1){
+      const a=P(ids[last]),b=P(ids[last+1]);
+      side=sideOf(heading||[1,0],[b.x-a.x,b.y-a.y]);
     }
   }
-  return {dist,prev};
-}
-function pathTo(res,src,dst){
-  if(!isFinite(res.dist[dst])) return null;
-  const p=[dst]; let c=dst;
-  while(c!==src){ c=res.prev[c]; p.push(c); }
-  return p.reverse();
-}
-const round5 = m => Math.max(5, Math.round(m/5)*5);
 
-/* ---------------- Turn-by-turn directions ---------------- */
-const V={N:[0,-1],E:[1,0],S:[0,1],W:[-1,0]};
-function dirOf(a,b){
-  const [x1,y1]=G.nodes[a],[x2,y2]=G.nodes[b], dx=x2-x1, dy=y2-y1;
-  return Math.abs(dx)>Math.abs(dy) ? (dx>0?'E':'W') : (dy>0?'S':'N');
-}
-function turnOf(from,to){
-  if(!from||from===to) return 'straight';
-  const a=V[from], b=V[to], c=a[0]*b[1]-a[1]*b[0];
-  return c>0 ? 'right' : c<0 ? 'left' : 'around';
-}
-function buildSteps(path,start,end){
-  const groups=[];
-  for(let i=0;i<path.length-1;i++){
-    const a=path[i], b=path[i+1], e=adj[a].find(x=>x.to===b), d=dirOf(a,b), last=groups[groups.length-1];
-    const gardens = (a==='J'&&b==='ADM')||(a==='ADM'&&b==='J');
-    if(last && !e.door && !last.door && last.dir===d && last.via===e.via){ last.len+=e.w; last.gardens=last.gardens||gardens; }
-    else groups.push({dir:d,via:e.via,door:e.door,len:e.w,gardens});
+  if(end.type==='stair'){
+    steps.push(`Go to <b>${end.name}</b>${side?` (on your ${side})`:''} and take it <b>${end.dir}</b> to the <b>${FLOORS[end.toFloor].name}</b>.`);
+  } else if(end.room.pseudo){
+    steps.push('You have reached the <b>Main Entrance</b>.');
+  } else {
+    steps.push(`You've arrived! <b>${nm(end.room)}</b> is ${side?`on your <b>${side}</b>`:'straight ahead'}.`);
   }
-  let heading=start.head||null;
-  const out=[];
-  groups.forEach((g,i)=>{
-    const first=i===0, last=i===groups.length-1, v=VIA[g.via];
-    let text, icon, dist=null, sub='';
-    if(g.door && first && start.kind==='room'){
-      text='Step out of '+start.code; icon='exit'; heading=g.dir;
-    } else if(g.door && last){
-      const t=turnOf(heading,g.dir);
-      text = t==='straight' ? 'Go straight ahead into '+end.code : t==='around' ? 'Turn around and go into '+end.code : 'Turn '+t+' into '+end.code;
-      icon = t==='around' ? 'around' : t;
-    } else {
-      const t=turnOf(heading,g.dir);
-      if(first && start.id==='ENT') text='Enter and walk straight ahead along the '+v.n;
-      else if(t==='straight') text=(first?'Walk straight ahead along the ':'Keep going straight along the ')+v.n;
-      else if(t==='around') text='Turn around and walk along the '+v.n;
-      else text='Turn '+t+' '+v.p+' the '+v.n;
-      icon=t; heading=g.dir;
-      dist=round5(g.len*SCALE);
-      if(g.gardens) sub='Gardens on both sides';
-    }
-    out.push({text,icon,dist,sub});
-  });
-  return out;
+  return {floor,steps,pts,start,end};
 }
 
-/* ---------------- State and DOM ---------------- */
-const $=s=>document.querySelector(s);
-const state={from:'ENT', to:'MB113', free:false};
-let current=null;
-const ICON={
-  straight:'<path d="M12 19V6M6.5 11.5 12 6l5.5 5.5"/>',
-  left:'<path d="M17 19v-5a4 4 0 0 0-4-4H6M10 6l-4 4 4 4"/>',
-  right:'<path d="M7 19v-5a4 4 0 0 1 4-4h7M14 6l4 4-4 4"/>',
-  around:'<path d="M8 19V9a4 4 0 0 1 8 0v7M12.5 12.5 16 16l3.5-3.5"/>',
-  exit:'<path d="M10 5H6v14h4M14 8l4 4-4 4M18 12H9"/>',
-  check:'<path d="M5 12.5 9.5 17 19 7.5"/>',
-  voice:'<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4ZM15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
-  stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>'
-};
-const svgi=n=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+ICON[n]+'</svg>';
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const label=l=>l.name ? l.code+' · '+l.name : l.code;
-
-/* populate selects */
-$('#from').innerHTML = LOCS.map(l=>`<option value="${l.id}">${esc(label(l))}</option>`).join('');
-$('#qrloc').innerHTML = $('#from').innerHTML;
-
-/* room hit areas on the blueprint */
-$('#rooms').innerHTML = LOCS.filter(l=>l.rect).map(l=>{
-  const [x,y,w,h]=l.rect;
-  return `<rect class="room" data-id="${l.id}" x="${x}" y="${y}" width="${w}" height="${h}" rx="2" tabindex="0" role="button" aria-label="Directions to ${esc(label(l))}"/>`;
-}).join('');
-$('#rooms').addEventListener('click',e=>{ const r=e.target.closest('.room'); if(r) setTo(r.dataset.id); });
-$('#rooms').addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ const r=e.target.closest('.room'); if(r){e.preventDefault(); setTo(r.dataset.id);} } });
-
-function setTo(id){
-  state.to=id;
-  if(state.from===id) state.from = id==='ENT' ? 'MB113' : 'ENT';
-  update(true);
+/* ---------- walking-time estimate ----------
+   The plans have no scale bar, so M_PER_PX is an ESTIMATE. 0.06 m per pixel makes a
+   classroom about 7-9 m wide and the first floor about 65 m long, which is typical
+   for a college block. Change it if you measure a real distance. */
+const M_PER_PX=0.06;      // metres per plan pixel
+const WALK_MPS=1.1;       // relaxed indoor walking speed (m/s)
+const STAIR_SEC=30;       // one flight of stairs
+function segMetres(pts){let d=0;for(let k=1;k<pts.length;k++)d+=Math.hypot(pts[k][0]-pts[k-1][0],pts[k][1]-pts[k-1][1]);return d*M_PER_PX;}
+function fmtTime(sec){if(sec<60)return 'under 1 min';return Math.round(sec/60)+' min';}
+function annotate(res){
+  let m=0,sec=0;
+  res.segs.forEach(s=>{s.m=segMetres(s.pts);s.sec=s.m/WALK_MPS;m+=s.m;sec+=s.sec;});
+  if(res.stairs) sec+=STAIR_SEC;
+  res.meters=m; res.seconds=sec; return res;
+}
+function navigate(a,b,p){const r=navigateRaw(a,b,p);return r?annotate(r):r;}
+function navigateRaw(srcRoom,dstRoom,pref){
+  const ep=r=>({floor:r.floor,node:r.pseudo?r.node:(r.stair?'st:'+r.key:'d:'+r.key)});
+  const s=ep(srcRoom), d=ep(dstRoom);
+  const sInfo=srcRoom.pseudo?{type:'entrance',room:srcRoom}:{type:'room',room:srcRoom};
+  const dInfo={type:'room',room:dstRoom};
+  if(s.floor===d.floor){
+    const r=dijkstra(graphs[s.floor],s.node,d.node);
+    if(!r) return null;
+    return {segs:[describe(s.floor,r.path,sInfo,dInfo)],stairs:null};
+  }
+  let best=null;
+  for(const sid of ['ENT','S1','S2']){
+    if(pref&&pref!=='auto'&&pref!==sid) continue;
+    const a=dijkstra(graphs[s.floor],s.node,stairNode[s.floor][sid]);
+    const b=dijkstra(graphs[d.floor],stairNode[d.floor][sid],d.node);
+    if(!a||!b) continue;
+    const tot=a.dist+b.dist;
+    if(!best||tot<best.tot) best={sid,a,b,tot};
+  }
+  if(!best) return null;
+  const nameS=STAIR_NAMES[best.sid], dir=d.floor>s.floor?'up':'down';
+  return {
+    stairs:{id:best.sid,name:nameS,dir},
+    segs:[
+      describe(s.floor,best.a.path,sInfo,{type:'stair',name:nameS,dir,toFloor:d.floor}),
+      describe(d.floor,best.b.path,{type:'stair',name:nameS},dInfo)
+    ]
+  };
 }
 
-/* ---------------- Search box ---------------- */
-const toIn=$('#to'), list=$('#results');
-let shown=[], active=-1;
-const norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');
+/* ---------- search ---------- */
 function search(q){
-  const n=norm(q);
-  if(!n) return LOCS.slice();
-  return LOCS.map(l=>{
-    const c=norm(l.code), h=norm(l.name+' '+l.where+' '+(l.alias||''));
-    let s=0;
-    if(c===n) s=100; else if(c.startsWith(n)||c.endsWith(n)) s=80; else if(c.includes(n)) s=60; else if(h.includes(n)) s=40;
-    return {l,s};
-  }).filter(x=>x.s).sort((a,b)=>b.s-a.s).map(x=>x.l);
+  q=norm(q); if(!q) return [];
+  return ROOMS.map(r=>{
+    let s=-1;
+    if(r.nid===q) s=0;
+    else if(r.nid.startsWith(q)) s=1;
+    else if(/^\d+$/.test(q)&&r.nid.endsWith(q)) s=2;
+    else if(r.norm.includes(q)) s=3;
+    return {r,s};
+  }).filter(x=>x.s>=0).sort((a,b)=>a.s-b.s||a.r.floor-b.r.floor).map(x=>x);
 }
-function openList(q){
-  shown=search(q); active=shown.length?0:-1;
-  list.innerHTML = shown.length ? shown.map((l,i)=>
-    `<li role="option" id="opt-${i}" data-id="${l.id}" aria-selected="${i===active}"><span class="o-code">${esc(l.code)}</span><span class="o-name">${esc(l.name||l.where)}</span>${l.name?`<span class="o-where">${esc(l.where)}</span>`:''}</li>`).join('')
-    : `<li class="none" role="option" aria-selected="false">No place matches “${esc(q)}”. Try a room number like 113, or a name like physics.</li>`;
-  list.hidden=false; toIn.setAttribute('aria-expanded','true');
-  toIn.setAttribute('aria-activedescendant', active>=0?'opt-'+active:'');
-}
-function closeList(){ list.hidden=true; toIn.setAttribute('aria-expanded','false'); toIn.removeAttribute('aria-activedescendant'); }
-function markActive(){
-  [...list.children].forEach((li,i)=>li.setAttribute('aria-selected',String(i===active)));
-  if(active>=0){ toIn.setAttribute('aria-activedescendant','opt-'+active); const el=$('#opt-'+active); if(el) el.scrollIntoView({block:'nearest'}); }
-}
-function choose(id){ closeList(); toIn.blur(); setTo(id); }
-toIn.addEventListener('focus',()=>{ toIn.select(); openList(''); });
-toIn.addEventListener('input',()=>openList(toIn.value));
-toIn.addEventListener('keydown',e=>{
-  if(e.key==='ArrowDown'){ e.preventDefault(); if(list.hidden) openList(toIn.value); else if(shown.length){active=(active+1)%shown.length;markActive();} }
-  else if(e.key==='ArrowUp'){ e.preventDefault(); if(shown.length){active=(active-1+shown.length)%shown.length;markActive();} }
-  else if(e.key==='Enter'){ e.preventDefault(); if(active>=0&&shown[active]) choose(shown[active].id); }
-  else if(e.key==='Escape'){ closeList(); toIn.value = state.to?label(LOC[state.to]):''; }
-});
-list.addEventListener('mousedown',e=>e.preventDefault());
-list.addEventListener('click',e=>{ const li=e.target.closest('li[data-id]'); if(li) choose(li.dataset.id); });
-toIn.addEventListener('blur',()=>{ setTimeout(()=>{ closeList(); toIn.value = state.to?label(LOC[state.to]):''; },120); });
+//</LOGIC>
 
-$('#from').addEventListener('change',e=>{ state.from=e.target.value; if(state.to===state.from) state.to=null; update(true); });
-$('#swap').addEventListener('click',()=>{ if(!state.to) return; const t=state.from; state.from=state.to; state.to=t; update(true); });
-$('#stepfree').addEventListener('change',e=>{ state.free=e.target.checked; update(true); });
+/* =====================================================================
+   UI
+   ===================================================================== */
+if(typeof document!=='undefined'){
+const SVGNS='http://www.w3.org/2000/svg';
+function el(name,attrs,parent){const e=document.createElementNS(SVGNS,name);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function wrap(t,max){const w=t.split(' '),L=[];let c='';w.forEach(x=>{if((c+' '+x).trim().length<=max)c=(c+' '+x).trim();else{if(c)L.push(c);c=x;}});if(c)L.push(c);return L;}
+function txt(g,x,y,s,size,cls,extra){const t=el('text',Object.assign({x,y,'text-anchor':'middle','font-size':size,class:cls},extra||{}),g);t.textContent=s;return t;}
 
-/* ---------------- Map drawing ---------------- */
-const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-const routeEl=$('#route'), casingEl=$('#casing');
-/* SVG elements have no .hidden property, so toggle the attribute directly */
-const showSvg=(el,on)=>{ if(on) el.removeAttribute('hidden'); else el.setAttribute('hidden',''); };
-function placeRect(el,loc){
-  if(loc&&loc.rect){ const [x,y,w,h]=loc.rect; el.setAttribute('x',x);el.setAttribute('y',y);el.setAttribute('width',w);el.setAttribute('height',h); showSvg(el,true); }
-  else showSvg(el,false);
-}
-function placeMark(el,node){ if(node){ const [x,y]=G.nodes[node]; el.setAttribute('transform',`translate(${x} ${y})`); showSvg(el,true); } else showSvg(el,false); }
-function drawRoute(path,animate){
-  const pts = path ? path.map(n=>G.nodes[n].join(',')).join(' ') : '';
-  casingEl.setAttribute('points',pts); routeEl.setAttribute('points',pts);
-  routeEl.style.transition='none'; routeEl.style.strokeDasharray='none'; routeEl.style.strokeDashoffset='0';
-  if(path && animate && !reduce){
-    const len=routeEl.getTotalLength();
-    routeEl.style.strokeDasharray=len; routeEl.style.strokeDashoffset=len;
-    void routeEl.getBoundingClientRect();
-    routeEl.style.transition='stroke-dashoffset 1.1s ease';
-    routeEl.style.strokeDashoffset='0';
-    setTimeout(()=>{ routeEl.style.transition='none'; routeEl.style.strokeDasharray='none'; },1250);
-  }
-}
-let zoom=1; const ZOOMS=[1,1.7,2.4];
-function applyZoom(center){
-  const svg=$('#map'), sc=$('#scroller');
-  svg.style.width=(ZOOMS[zoom==null?0:zoom]*100)+'%';
-  $('#zout').disabled = zoom===0; $('#zin').disabled = zoom===ZOOMS.length-1;
-  if(center){
-    const [x,y]=center, k=svg.clientWidth/730;
-    sc.scrollLeft = x*k - sc.clientWidth/2; sc.scrollTop = y*k - sc.clientHeight/2;
-  }
-}
-zoom=0;
-$('#zin').addEventListener('click',()=>{ zoom=Math.min(ZOOMS.length-1,zoom+1); applyZoom(focusPoint()); });
-$('#zout').addEventListener('click',()=>{ zoom=Math.max(0,zoom-1); applyZoom(focusPoint()); });
-function focusPoint(){
-  if(current&&current.path){ const mid=current.path[Math.floor(current.path.length/2)]; return G.nodes[mid]; }
-  return [365,440];
-}
+const layers={};   // per floor: {svg, route, hits:{key:rect}}
 
-/* ---------------- Render ---------------- */
-function update(animate){
-  stopSpeech();
-  $('#from').value=state.from;
-  toIn.value = state.to ? label(LOC[state.to]) : '';
-  $('#stepfree').checked=state.free;
-  const hint=$('#accHint');
-  hint.hidden=!state.free;
-  hint.textContent = STEP_EDGES.length
-    ? 'Paths with stairs are avoided.'
-    : 'No stairs or ramps are marked on the blueprint yet, so every path counts as step-free. Add stair locations in the data block to avoid them.';
-  const start=LOC[state.from], end=state.to?LOC[state.to]:null;
-  placeRect($('#hlStart'), start.kind==='room'?start:null);
-  placeRect($('#hlEnd'), end);
-  placeMark($('#startMark'), start.node);
-  placeMark($('#endMark'), end?end.node:null);
-  current=null;
-  if(!end){
-    drawRoute(null);
-    $('#sum').innerHTML=`<p class="sum-line">You are at ${esc(label(start))}. Search for a room above to see the way.</p>`;
-    $('#steps').innerHTML='<p class="empty">Directions appear here once you choose a destination.</p>';
-    renderNear(start,start);
-    syncQr(); return;
-  }
-  const res=dijkstra(start.node,state.free);
-  const path=pathTo(res,start.node,end.node);
-  if(!path){
-    drawRoute(null);
-    $('#sum').innerHTML='<p class="sum-line">No step-free route was found between these places.</p>';
-    $('#steps').innerHTML='<p class="empty">Turn off the step-free option to see the shortest route.</p>';
-    renderNear(end,start); syncQr(); return;
-  }
-  const metres=res.dist[end.node]*SCALE, secs=metres/SPEED;
-  const steps=buildSteps(path,start,end);
-  current={path,steps,end,start};
-  drawRoute(path,animate);
-  const mins=Math.max(1,Math.round(secs/60));
-  $('#sum').innerHTML=`
-    <p class="sum-line">${esc(label(start))} to ${esc(label(end))}</p>
-    <div class="metrics">
-      <div class="metric"><b>≈ ${round5(metres)} m</b><span>walking distance</span></div>
-      <div class="metric"><b>${mins} min</b><span>estimated walk</span></div>
-      <div class="metric"><b>${steps.length}</b><span>steps</span></div>
-    </div>
-    <div class="row">${canSpeak?`<button class="btn" id="speak" type="button" aria-pressed="false">${svgi('voice')}<span>Read aloud</span></button>`:''}</div>`;
-  const sp=$('#speak'); if(sp) sp.addEventListener('click',toggleSpeech);
-  $('#steps').innerHTML='<ol class="list">'+steps.map(s=>
-    `<li><span class="ico">${svgi(s.icon)}</span><span class="s-text">${esc(s.text)}${s.sub?`<span class="s-sub">${esc(s.sub)}</span>`:''}</span><span class="s-dist">${s.dist?'≈ '+s.dist+' m':''}</span></li>`).join('')
-    + `<li class="arrive"><span class="ico">${svgi('check')}</span><span class="s-text">You have arrived at ${esc(label(end))}<span class="s-sub">${esc(end.where)}</span></span><span class="s-dist"></span></li></ol>`;
-  renderNear(end,start);
-  if(zoom>0) applyZoom(G.nodes[end.node]);
-  syncQr();
-}
-function renderNear(center,start){
-  const res=dijkstra(center.node,false);
-  const items=LOCS.filter(l=>l.id!==center.id).map(l=>({l,d:res.dist[l.node]*SCALE})).filter(x=>isFinite(x.d)).sort((a,b)=>a.d-b.d).slice(0,5);
-  $('#h-near').textContent='Nearby · '+center.code;
-  $('#near').innerHTML='<ul class="nearlist">'+items.map(x=>
-    `<li><button type="button" data-id="${x.l.id}"><span class="n-code">${esc(x.l.code)}</span><span>${esc(x.l.name||x.l.where)}</span><span class="n-dist">≈ ${round5(x.d)} m</span></button></li>`).join('')+'</ul>';
-}
-$('#near').addEventListener('click',e=>{ const b=e.target.closest('button[data-id]'); if(b) setTo(b.dataset.id); });
+function renderFloor(n){
+  const F=FLOORS[n], svg=document.getElementById('svg'+n);
+  svg.setAttribute('viewBox',`0 0 ${F.w} ${F.h}`);
+  const defs=el('defs',{},svg);
+  const gp=el('pattern',{id:'grid'+n,width:20,height:20,patternUnits:'userSpaceOnUse'},defs);
+  el('path',{d:'M20 0H0V20',fill:'none',stroke:'#171a20','stroke-width':1},gp);
+  const hp=el('pattern',{id:'hatch'+n,width:14,height:14,patternUnits:'userSpaceOnUse',patternTransform:'rotate(45)'},defs);
+  el('rect',{width:14,height:14,fill:'#14171c'},hp);
+  el('line',{x1:0,y1:0,x2:0,y2:14,stroke:'#262b33','stroke-width':3},hp);
 
-/* ---------------- Spoken directions ---------------- */
-const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
-let batch=0;
-function setSpeaking(on){
-  const b=$('#speak'); if(!b) return;
-  b.setAttribute('aria-pressed',String(on));
-  b.innerHTML=svgi(on?'stop':'voice')+'<span>'+(on?'Stop':'Read aloud')+'</span>';
-}
-function stopSpeech(){ if(canSpeak){ batch++; try{speechSynthesis.cancel();}catch(e){} } }
-function toggleSpeech(){
-  const b=$('#speak');
-  if(b.getAttribute('aria-pressed')==='true'){ stopSpeech(); setSpeaking(false); return; }
-  stopSpeech();
-  const my=batch;
-  const lines=current.steps.map(s=>s.text+(s.dist?', about '+s.dist+' metres':'')).concat(['You have arrived at '+current.end.code]);
-  lines.forEach((t,i)=>{
-    const u=new SpeechSynthesisUtterance(t); u.lang='en-IN'; u.rate=0.95;
-    if(i===lines.length-1) u.onend=()=>{ if(my===batch) setSpeaking(false); };
-    u.onerror=()=>{ if(my===batch) setSpeaking(false); };
-    speechSynthesis.speak(u);
+  const drawn=el('g',{class:'drawn'},svg);
+  el('rect',{width:F.w,height:F.h,fill:'#0c0d0f'},drawn);
+  el('rect',{width:F.w,height:F.h,fill:`url(#grid${n})`},drawn);
+
+  // corridor guide lines
+  const G=graphs[n];
+  G.edges.forEach(e=>el('line',{x1:G.nodes[e.a].x,y1:G.nodes[e.a].y,x2:G.nodes[e.b].x,y2:G.nodes[e.b].y,class:'guide'},drawn));
+
+  F.deco.forEach(d=>{
+    if(d.skip) return;
+    if(d.t==='hatch'){
+      el('rect',{x:d.x,y:d.y,width:d.w,height:d.h,fill:`url(#hatch${n})`,stroke:'#3a4250','stroke-width':2},drawn);
+      const cx=d.x+d.w/2,cy=d.y+d.h/2;
+      const t=txt(drawn,cx,cy,d.label,26,'deco',{transform:`rotate(${d.rot||0} ${cx} ${cy})`,'dominant-baseline':'middle'});
+    } else {
+      txt(drawn,d.x,d.y,d.s,d.size,'deco',d.rot?{transform:`rotate(${d.rot} ${d.x} ${d.y})`}:{});
+    }
   });
-  setSpeaking(true);
+
+  // rooms
+  F.rooms.forEach(r=>{
+    el('rect',{x:r.x,y:r.y,width:r.w,height:r.h,class:'wall'+(r.stair?' stairfill':'')},drawn);
+    if(r.stair){ for(let y=r.y+14;y<r.y+r.h-6;y+=10) el('line',{x1:r.x+8,x2:r.x+r.w-8,y1:y,y2:y,stroke:'#3d3860','stroke-width':2},drawn); }
+    labelRoom(drawn,r);
+    el('circle',{cx:r.door[0],cy:r.door[1],r:4,fill:'#0c0d0f',stroke:'#98a0ad','stroke-width':2},drawn);
+  });
+
+  const hits=el('g',{},svg), rects={};
+  F.rooms.forEach(r=>{
+    const h=el('rect',{x:r.x,y:r.y,width:r.w,height:r.h,class:'hit',rx:3},hits);
+    const tt=el('title',{},h); tt.textContent=r.id+(r.sub?' – '+r.sub:'');
+    h.addEventListener('click',()=>pickFromMap(r));
+    rects[r.key]=h;
+  });
+
+  // entrance marker (floor 1)
+  if(n===1){
+    const g=el('g',{},svg);
+    el('polygon',{points:'28,404 58,404 58,394 82,415 58,436 58,426 28,426',fill:'#8fb8ff',opacity:.95},g);
+    const t=txt(g,40,386,'ENTRANCE',14,'mklabel');
+    t.setAttribute('x',40);
+  }
+  const route=el('g',{},svg);
+  svg.addEventListener('click',ev=>{
+    const pt=svg.createSVGPoint(); pt.x=ev.clientX; pt.y=ev.clientY;
+    const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+    document.getElementById('coords').textContent=`Floor ${n} click: x=${Math.round(p.x)}, y=${Math.round(p.y)}  (use these to fine-tune door / corridor coordinates in the code)`;
+  });
+
+  layers[n]={svg,route,hits:rects};
 }
 
-/* ---------------- QR codes ---------------- */
-function qrSvg(text){
-  if(typeof qrcode!=='function') return null;
-  const qr=qrcode(0,'M'); qr.addData(text); qr.make();
-  const n=qr.getModuleCount(), m=3; let d='';
-  for(let r=0;r<n;r++) for(let c=0;c<n;c++) if(qr.isDark(r,c)) d+=`M${c+m} ${r+m}h1v1h-1z`;
-  return `<svg viewBox="0 0 ${n+2*m} ${n+2*m}" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+function labelRoom(g,r){
+  if(r.rot){
+    txt(g,r.cx,r.cy,r.id.toUpperCase(),26,'deco',{transform:`rotate(${r.rot} ${r.cx} ${r.cy})`,'dominant-baseline':'middle'});
+    return;
+  }
+  const pad=8, avail=r.w-pad;
+  let f=Math.min(18,r.w/5.5), idLines=[r.id];
+  if(r.id.length*f*0.6>avail){ f=Math.min(14,Math.max(10,r.w/9)); idLines=wrap(r.id,Math.max(4,Math.floor(avail/(f*0.58)))); }
+  const sf=Math.max(8.5,Math.min(11,r.w/10)), lh=1.18;
+  const subLines=r.sub?wrap(r.sub,Math.max(5,Math.floor(avail/(sf*0.55)))):[];
+  const total=idLines.length*f*lh+(subLines.length?4:0)+subLines.length*sf*lh;
+  let top=r.cy-total/2;
+  idLines.forEach((l,i)=>txt(g,r.cx,top+i*f*lh+f*0.9,l,f,'rl'));
+  const base=top+idLines.length*f*lh+4;
+  subLines.forEach((l,i)=>txt(g,r.cx,base+i*sf*lh+sf*0.9,l,sf,'sub'));
 }
-function qrLink(){ const base=$('#qrbase').value.trim(); return base ? base.split('#')[0]+'#at-'+$('#qrloc').value : ''; }
-function syncQr(){
-  const box=$('#qrbox'), link=qrLink();
-  if(!/^https?:\/\//i.test(link)){ box.innerHTML='<p class="note" style="padding:12px;text-align:center">Paste this page’s link below to make the code.</p>'; return; }
-  const s=qrSvg(link);
-  box.innerHTML = s || '<p class="note" style="padding:12px;text-align:center">The QR tool did not load. Check your connection and reload.</p>';
+
+function marker(layer,x,y,color,label,caption){
+  const g=el('g',{class:'mk'},layer);
+  el('circle',{cx:x,cy:y,r:14,fill:color,stroke:'#0c0d0f','stroke-width':3},g);
+  const t=el('text',{x,y:y+5},g); t.textContent=label;
+  if(caption){ const c=el('text',{x:x,y:y-22,class:'mklabel','text-anchor':'middle'},layer); c.textContent=caption; }
 }
-$('#qrloc').addEventListener('change',syncQr);
-$('#qrbase').addEventListener('input',syncQr);
-$('#qrcopy').addEventListener('click',async()=>{
-  const link=qrLink(), btn=$('#qrcopy');
-  try{ await navigator.clipboard.writeText(link); btn.textContent='Copied'; }
-  catch(e){ const i=$('#qrbase'); i.value=link; i.focus(); i.select(); btn.textContent='Press copy'; }
-  setTimeout(()=>btn.textContent='Copy link',1600);
+
+function drawRoute(res){
+  [1,2].forEach(n=>{layers[n].route.innerHTML='';Object.values(layers[n].hits).forEach(h=>h.classList.remove('src','dest'));});
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('has'));
+  if(!res) return;
+  res.segs.forEach((s,i)=>{
+    const L=layers[s.floor].route;
+    const d='M'+s.pts.map(p=>p.join(' ')).join(' L');
+    el('path',{d,class:'route-bg'},L);
+    el('path',{d,class:'route'},L);
+    document.querySelector(`.tab[data-floor="${s.floor}"]`).classList.add('has');
+    const a=s.pts[0], b=s.pts[s.pts.length-1];
+    if(s.start.type==='stair') marker(L,a[0],a[1],'#b3a7ee',s.start.name&&'↕',null);
+    else marker(L,a[0],a[1],'#8fb8ff','A','You');
+    if(s.end.type==='stair') marker(L,b[0],b[1],'#b3a7ee',s.end.dir==='up'?'↑':'↓',s.end.name);
+    else marker(L,b[0],b[1],'#6fcf97','B',s.end.room.id);
+    const h=layers[s.floor].hits;
+    if(s.start.type==='room'&&h[s.start.room.key]) h[s.start.room.key].classList.add('src');
+    if(s.end.type==='room'&&h[s.end.room.key]) h[s.end.room.key].classList.add('dest');
+  });
+}
+
+function showFloor(n){
+  [1,2].forEach(k=>document.getElementById('svg'+k).classList.toggle('hidden',k!==n));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',+t.dataset.floor===n));
+  document.querySelectorAll('.fl').forEach(f=>f.classList.toggle('active',+f.dataset.floor===n));
+}
+
+/* ---------- controls ---------- */
+const $=id=>document.getElementById(id);
+const fromSel=$('from'), toIn=$('to'), sugg=$('sugg'), msg=$('msg');
+let chosen=null;
+
+(function fillFrom(){
+  const og=(label,list)=>{const g=document.createElement('optgroup');g.label=label;list.forEach(r=>{const o=document.createElement('option');o.value=r.key;o.textContent=r.id+(r.sub?' – '+r.sub:'');g.appendChild(o);});fromSel.appendChild(g);};
+  og('Entrance',ROOMS.filter(r=>r.pseudo));
+  og('First floor',ROOMS.filter(r=>r.floor===1&&!r.pseudo));
+  og('Second floor',ROOMS.filter(r=>r.floor===2));
+})();
+
+function showSugg(list){
+  if(!list.length){sugg.style.display='none';return;}
+  sugg.innerHTML='';
+  list.slice(0,8).forEach(r=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<b>${esc(r.id)}</b> ${r.sub?'· '+esc(r.sub):''} <small>· Floor ${r.floor}</small>`;
+    li.addEventListener('mousedown',e=>{e.preventDefault();setTarget(r);});
+    sugg.appendChild(li);
+  });
+  sugg.style.display='block';
+}
+function setTarget(r){chosen=r;toIn.value=r.id+(r.sub?' – '+r.sub:'');sugg.style.display='none';go();}
+toIn.addEventListener('input',()=>{chosen=null;msg.textContent='';showSugg(search(toIn.value).map(x=>x.r));});
+toIn.addEventListener('focus',()=>{if(!chosen&&toIn.value)showSugg(search(toIn.value).map(x=>x.r));});
+toIn.addEventListener('blur',()=>setTimeout(()=>sugg.style.display='none',120));
+toIn.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go();}});
+$('go').addEventListener('click',go);
+$('swap').addEventListener('click',()=>{
+  if(!chosen){msg.textContent='Choose a destination first.';return;}
+  const src=ROOM_BY_KEY[fromSel.value];
+  fromSel.value=chosen.key; chosen=src; toIn.value=src.id+(src.sub?' – '+src.sub:''); go();
 });
-try{ const href=location.href.split('#')[0]; if(/^https?:\/\//i.test(href)) $('#qrbase').value=href; }catch(e){}
-$('#qrloc').value='ENT';
+$('clear').addEventListener('click',()=>{
+  chosen=null;toIn.value='';msg.textContent='';$('summary').textContent='';
+  $('steps').innerHTML='<p class="hint">Route cleared.</p>';drawRoute(null);
+});
+$('stairPref').addEventListener('change',()=>{if(chosen)go();});
+fromSel.addEventListener('change',()=>{if(chosen)go();});
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>showFloor(+t.dataset.floor)));
+function pickFromMap(r){setTarget(r);}
 
-/* ---------------- Start ---------------- */
-function readHash(){
-  const m=/^#at-([A-Za-z0-9]+)$/.exec(location.hash||'');
-  if(m && LOC[m[1]]){ state.from=m[1]; state.to=null; return true; }
-  return false;
+function go(){
+  msg.textContent='';
+  if(!chosen){
+    const res=search(toIn.value);
+    if(!res.length){msg.textContent=toIn.value?`No room found for “${toIn.value}”.`:'Type a room number or name first.';return;}
+    if(res.length===1||(res[0].s===0&&res[1].s>0)) chosen=res[0].r;
+    else{showSugg(res.map(x=>x.r));msg.textContent='Several places match — please pick one from the list.';return;}
+    toIn.value=chosen.id+(chosen.sub?' – '+chosen.sub:'');
+  }
+  const src=ROOM_BY_KEY[fromSel.value];
+  if(src.key===chosen.key){msg.textContent='You are already there! Pick a different start or destination.';return;}
+  const res=navigate(src,chosen,$('stairPref').value);
+  if(!res){msg.textContent='Could not find a route (check door / corridor data).';return;}
+  drawRoute(res);
+  $('summary').innerHTML=`<div class="route-title">${esc(src.id)} to ${esc(chosen.id)}</div>`+(res.stairs?`<div class="via">Via ${res.stairs.name}</div>`:'')+`<div class="stats"><div class="stat"><b>${fmtTime(res.seconds)}</b><span>Estimated walk</span></div><div class="stat"><b>${Math.max(5,Math.round(res.meters/5)*5)} m</b><span>Distance</span></div></div>`;
+  $('steps').innerHTML=res.segs.map(s=>`<div class="fl" data-floor="${s.floor}"><h3><span class="badge">F${s.floor}</span>${FLOORS[s.floor].name}<span class="ft">${fmtTime(s.sec)}</span></h3><ol>${s.steps.map(t=>`<li>${t}</li>`).join('')}</ol></div>`).join('');
+  document.querySelectorAll('.fl').forEach(f=>f.addEventListener('click',()=>showFloor(+f.dataset.floor)));
+  showFloor(res.segs[0].floor);
+  if(window.innerWidth<=900) $('mapPanel').scrollIntoView({behavior:'smooth',block:'start'});
 }
-window.addEventListener('hashchange',()=>{ if(readHash()) update(true); });
-readHash();
-applyZoom();
-update(true);
-</script>s
+
+renderFloor(1); renderFloor(2);
+}
+</script>
+<script>
+(function(){var sp=document.getElementById('splash');if(!sp)return;
+function done(){if(sp&&sp.parentNode){sp.parentNode.removeChild(sp);}sp=null;}
+sp.addEventListener('click',function(){sp.style.transition='opacity .25s';sp.style.opacity='0';setTimeout(done,260);});
+setTimeout(done,2600);})();
+</script>
+</body>
+</html>
